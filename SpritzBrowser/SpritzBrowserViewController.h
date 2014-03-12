@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SVWebViewController.h"
 #import <Spritz-SDK/Spritz_SDK.h>
+#import "SVWebViewController.h"
 #import "WebViewControllerActivitySpritz.h"
+#import "NJKWebViewProgress.h"
 
-@interface SpritzBrowserViewController : UINavigationController <UIWebViewDelegate, SVWebViewControllerActivityDelegate, SpritzViewControllerDelegate, SpritzConnectorCredentialsDelegate, WebViewControllerActivitySpritzDelegate, UITextFieldDelegate>
+@interface SpritzBrowserViewController : UINavigationController <UIWebViewDelegate, SVWebViewControllerActivityDelegate, SpritzViewControllerDelegate, SpritzConnectorCredentialsDelegate, WebViewControllerActivitySpritzDelegate, UITextFieldDelegate, NJKWebViewProgressDelegate>
 {
 //    UILabel *pageTitle;
     UITextField *addressField;

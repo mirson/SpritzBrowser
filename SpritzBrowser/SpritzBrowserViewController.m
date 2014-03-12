@@ -8,6 +8,7 @@
 
 #import "SpritzBrowserViewController.h"
 #import "MBProgressHUD.h"
+#import "NJKWebViewProgressView.h"
 
 static const CGFloat kMargin = 16.0f;
 static const CGFloat kSpacer = 6.0f;
@@ -20,6 +21,10 @@ NSString *clientID = @"PostMan";
 NSString *clientSecret = @"password";
 
 @interface SpritzBrowserViewController ()
+{
+    NJKWebViewProgressView *_progressView;
+    NJKWebViewProgress *_progressProxy;
+}
 
 @property (nonatomic, strong) SVWebViewController *webViewController;
 
@@ -35,8 +40,12 @@ NSString *clientSecret = @"password";
 
 - (id)init
 {
+    _progressProxy = [[NJKWebViewProgress alloc] init];
+    _progressProxy.webViewProxyDelegate = self;
+    _progressProxy.progressDelegate = self;
+    
     self.webViewController = [[SVWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://www.google.com"]
-                                                             delegate:self];
+                                                             delegate:_progressProxy];
     self.webViewController.activityDelegate = self;
     
     if (self = [super initWithRootViewController:self.webViewController]) {
@@ -84,6 +93,11 @@ NSString *clientSecret = @"password";
                 action:@selector(loadAddress:event:)
       forControlEvents:UIControlEventEditingDidEndOnExit];
 
+    CGFloat progressBarHeight = 2.5f;
+    CGRect navigaitonBarBounds = self.navigationBar.bounds;
+    CGRect barFrame = CGRectMake(0, navigaitonBarBounds.size.height - progressBarHeight, navigaitonBarBounds.size.width, progressBarHeight);
+    _progressView = [[NJKWebViewProgressView alloc] initWithFrame:barFrame];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(spritzConnectorDidAuthentificate:)
                                                  name:spritzConnectorDidAuthentificateNotification
@@ -95,6 +109,8 @@ NSString *clientSecret = @"password";
     
     self.webViewController.title = self.title;
     self.navigationBar.tintColor = self.barsTintColor;
+
+    [self.navigationBar addSubview:_progressView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -112,6 +128,15 @@ NSString *clientSecret = @"password";
         [[SpritzDataStore sharedStore] saveDefaultUserSettings:spritzSettings];
         [[SpritzDataStore sharedStore].userSettings setWordsPerMinute:280];
 	});
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:NO];
+    
+    // Remove progress view
+    // because UINavigationBar is shared with other ViewControllers
+    [_progressView removeFromSuperview];
 }
 
 - (void)spritzConnectorDidAuthentificate:(NSNotification *)notification
@@ -154,7 +179,7 @@ NSString *clientSecret = @"password";
 - (void)webViewDidStartLoad:(UIWebView *)webView {
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-    self.addressField.text = [[[webView request] URL] absoluteString];
+//    self.addressField.text = [[[webView request] URL] absoluteString];
     [self.webViewController updateToolbarItems];
 }
 
@@ -163,12 +188,13 @@ NSString *clientSecret = @"password";
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
 //    self.pageTitle.text = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
-    self.addressField.text = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+    self.addressField.text = [webView stringByEvaluatingJavaScriptFromString:@"document.URL"];
     [self.webViewController updateToolbarItems];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    
     [self.webViewController updateToolbarItems];
 }
 
@@ -236,6 +262,7 @@ NSString *clientSecret = @"password";
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
+        [UIAlertView showSpritzAPIError:error];
         NSLog(@"Error: %@", error);
     }];
 }
@@ -246,6 +273,18 @@ NSString *clientSecret = @"password";
 {
     [self.addressField setSelectedTextRange:[self.addressField textRangeFromPosition:self.addressField.beginningOfDocument
                                                                           toPosition:self.addressField.endOfDocument]];
+}
+
+#pragma mark - NJKWebViewProgressDelegate
+
+- (void)webViewProgress:(NJKWebViewProgress *)webViewProgress updateProgress:(float)progress
+{
+    [_progressView setProgress:progress animated:YES];
+    
+    // hook to set toolbar items proper
+    if (progress == 1.0) {
+        [self.webViewController setToolbarItemsCompleted];
+    }
 }
 
 @end
