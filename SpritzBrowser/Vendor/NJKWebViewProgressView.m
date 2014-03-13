@@ -18,9 +18,9 @@
         _progressBarView = [[UIView alloc] initWithFrame:self.bounds];
         _progressBarView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         UIColor *tintColor = [UIColor colorWithRed:22.f / 255.f green:126.f / 255.f blue:251.f / 255.f alpha:1.0]; // iOS7 Safari bar color
-        if ([UIApplication.sharedApplication.delegate.window respondsToSelector:@selector(setTintColor:)]) {
-            tintColor = UIApplication.sharedApplication.delegate.window.tintColor;
-        }
+//        if ([UIApplication.sharedApplication.delegate.window respondsToSelector:@selector(setTintColor:)]) {
+//            tintColor = UIApplication.sharedApplication.delegate.window.tintColor;
+//        }
         _progressBarView.backgroundColor = tintColor;
         [self addSubview:_progressBarView];
         

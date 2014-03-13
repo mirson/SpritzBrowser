@@ -17,6 +17,8 @@ static const CGFloat kSpacer = 6.0f;
 static const CGFloat kAddressHeight = 28.0f;
 static const CGFloat kAddressFontSize = 18.0f;
 
+static const NSInteger kAddressCancelButtonTag = 1002;
+
 NSString *clientID = @"PostMan";
 NSString *clientSecret = @"password";
 
@@ -24,6 +26,8 @@ NSString *clientSecret = @"password";
 {
     NJKWebViewProgressView *_progressView;
     NJKWebViewProgress *_progressProxy;
+    
+    UIWebView *_webView;
 }
 
 @property (nonatomic, strong) SVWebViewController *webViewController;
@@ -89,9 +93,9 @@ NSString *clientSecret = @"password";
     [self.navigationBar addSubview:address];
     self.addressField = address;
     
-    [address addTarget:self
-                action:@selector(loadAddress:event:)
-      forControlEvents:UIControlEventEditingDidEndOnExit];
+//    [address addTarget:self
+//                action:@selector(loadAddress:event:)
+//      forControlEvents:UIControlEventEditingDidEndOnExit|UIControlEventEditingDidEnd];
 
     CGFloat progressBarHeight = 2.5f;
     CGRect navigaitonBarBounds = self.navigationBar.bounds;
@@ -128,6 +132,8 @@ NSString *clientSecret = @"password";
         [[SpritzDataStore sharedStore] saveDefaultUserSettings:spritzSettings];
         [[SpritzDataStore sharedStore].userSettings setWordsPerMinute:280];
 	});
+    
+    [_progressView setProgress:0.6 animated:false];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -179,7 +185,9 @@ NSString *clientSecret = @"password";
 - (void)webViewDidStartLoad:(UIWebView *)webView {
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-//    self.addressField.text = [[[webView request] URL] absoluteString];
+    _webView = webView;
+    
+    self.addressField.text = [[[webView request] URL] absoluteString];
     [self.webViewController updateToolbarItems];
 }
 
@@ -187,8 +195,18 @@ NSString *clientSecret = @"password";
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
-//    self.pageTitle.text = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
-    self.addressField.text = [webView stringByEvaluatingJavaScriptFromString:@"document.URL"];
+    _webView = webView;
+    
+    self.addressField.text = [_webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+    [UIView animateWithDuration:0.3
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         self.addressField.textAlignment = NSTextAlignmentCenter;
+                     }
+                     completion:^(BOOL finished) {
+                     }];
+//    self.addressField.text = [webView stringByEvaluatingJavaScriptFromString:@"document.URL"];
     [self.webViewController updateToolbarItems];
 }
 
@@ -263,16 +281,99 @@ NSString *clientSecret = @"password";
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
         [UIAlertView showSpritzAPIError:error];
-        NSLog(@"Error: %@", error);
     }];
 }
 
 #pragma mark - UITextFieldDelegate
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField
+- (void)addressFieldCancel
 {
-    [self.addressField setSelectedTextRange:[self.addressField textRangeFromPosition:self.addressField.beginningOfDocument
-                                                                          toPosition:self.addressField.endOfDocument]];
+    self.addressField.text = [_webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+    [self.addressField resignFirstResponder];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self loadAddress:nil event:nil];
+
+	[textField resignFirstResponder];
+	return YES;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    
+//    [self.addressField setSelectedTextRange:[self.addressField textRangeFromPosition:self.addressField.beginningOfDocument
+//                                                                          toPosition:self.addressField.endOfDocument]];
+    
+    // Stop loading if we are loading a page
+    [self.webViewController stopLoading];
+    
+    // Move a "cancel" button into the nav bar a la Safari.
+    UINavigationBar *navBar = self.navigationBar;
+    
+    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [cancelButton setTitle:@"Cancel" forState:UIControlStateHighlighted];
+    [cancelButton setFrame:CGRectMake(navBar.bounds.size.width,
+                                      kSpacer,
+                                      75 - kMargin,
+                                      kAddressHeight)];
+    [cancelButton setHidden:NO];
+    [cancelButton setEnabled:YES];
+    [cancelButton addTarget:self action:@selector(addressFieldCancel) forControlEvents:UIControlEventTouchUpInside];
+    cancelButton.tag = kAddressCancelButtonTag;
+    
+    
+    
+    [UIView setAnimationsEnabled:YES];
+    [UIView animateWithDuration:0.3
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         self.addressField.frame = CGRectMake(kMargin,
+                                                              kSpacer,
+                                                              navBar.bounds.size.width - 2*kMargin - 75,
+                                                              kAddressHeight);
+                         self.addressField.textAlignment = NSTextAlignmentLeft;
+                         
+                         [cancelButton setFrame:CGRectMake(navBar.bounds.size.width - 75,
+                                                           kSpacer,
+                                                           75 - kMargin,
+                                                           kAddressHeight)];
+                         [navBar addSubview:cancelButton];
+                         
+                     }
+                     completion:^(BOOL finished) {
+                         self.addressField.clearButtonMode = UITextFieldViewModeAlways;
+                     }];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    UINavigationBar *navBar = self.navigationBar;
+    UIButton *cancelButton = (UIButton *)[self.view viewWithTag:kAddressCancelButtonTag];
+    
+    self.addressField.clearButtonMode = UITextFieldViewModeNever;
+    
+    [UIView setAnimationsEnabled:YES];
+    [UIView animateWithDuration:0.3
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         self.addressField.frame = CGRectMake(kMargin,
+                                                              kSpacer,
+                                                              navBar.bounds.size.width - 2*kMargin,
+                                                              kAddressHeight);
+                         self.addressField.textAlignment = NSTextAlignmentCenter;
+                         
+                         [cancelButton setFrame:CGRectMake(navBar.bounds.size.width,
+                                                           kSpacer,
+                                                           75 - kMargin,
+                                                           kAddressHeight)];
+                     }
+                     completion:^(BOOL finished) {
+                         [cancelButton removeFromSuperview];
+                     }]; 
 }
 
 #pragma mark - NJKWebViewProgressDelegate
