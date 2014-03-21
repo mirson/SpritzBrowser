@@ -1,5 +1,7 @@
-Pods/
+Pods/Spritz-SDK/
 
 *.xcuserstate
 
 *.lock
+
+xcuserdata/

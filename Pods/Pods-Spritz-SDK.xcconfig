@@ -1,0 +1,2 @@
+PODS_SPRITZ_SDK_FRAMEWORK_SEARCH_PATHS = "${PODS_ROOT}/Spritz-SDK/Spritz-SDK" "$(PODS_ROOT)/Spritz-SDK/Spritz-SDK"
+PODS_SPRITZ_SDK_OTHER_LDFLAGS = -ObjC -all_load -framework Foundation -framework Spritz-SDK -framework UIKit

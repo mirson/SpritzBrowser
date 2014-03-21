@@ -19,8 +19,8 @@ static const CGFloat kAddressFontSize = 18.0f;
 
 static const NSInteger kAddressCancelButtonTag = 1002;
 
-NSString *clientID = @"PostMan";
-NSString *clientSecret = @"password";
+static NSString *clientID = @"AlexanderTest";
+static NSString *clientSecret = @"fgRsKKzgP6";
 
 @interface SpritzBrowserViewController ()
 {
@@ -119,7 +119,7 @@ NSString *clientSecret = @"password";
 
 - (void)viewDidAppear:(BOOL)animated
 {
-	[super viewDidAppear:animated];
+    [super viewDidAppear:animated];
 
     static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
