@@ -18,12 +18,12 @@
         _progressBarView = [[UIView alloc] initWithFrame:self.bounds];
         _progressBarView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         UIColor *tintColor = [UIColor colorWithRed:22.f / 255.f green:126.f / 255.f blue:251.f / 255.f alpha:1.0]; // iOS7 Safari bar color
-//        if ([UIApplication.sharedApplication.delegate.window respondsToSelector:@selector(setTintColor:)]) {
-//            tintColor = UIApplication.sharedApplication.delegate.window.tintColor;
-//        }
+        if ([UIApplication.sharedApplication.delegate.window respondsToSelector:@selector(setTintColor:)] && UIApplication.sharedApplication.delegate.window.tintColor) {
+            tintColor = UIApplication.sharedApplication.delegate.window.tintColor;
+        }
         _progressBarView.backgroundColor = tintColor;
         [self addSubview:_progressBarView];
-        
+
         _barAnimationDuration = 0.27f;
         _fadeAnimationDuration = 0.27f;
         _fadeOutDelay = 0.1f;
@@ -44,7 +44,7 @@
         frame.size.width = progress * self.bounds.size.width;
         _progressBarView.frame = frame;
     } completion:nil];
-    
+
     if (progress >= 1.0) {
         [UIView animateWithDuration:animated ? _fadeAnimationDuration : 0.0 delay:_fadeOutDelay options:UIViewAnimationOptionCurveEaseInOut animations:^{
             _progressBarView.alpha = 0.0;

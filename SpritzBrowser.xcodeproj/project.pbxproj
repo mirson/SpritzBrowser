@@ -24,8 +24,6 @@
 		BA52A64118CCCFF500596D86 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA52A62518CCCFF500596D86 /* CoreData.framework */; };
 		BA52A64918CCCFF500596D86 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BA52A64718CCCFF500596D86 /* InfoPlist.strings */; };
 		BA52A64B18CCCFF500596D86 /* SpritzBrowserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BA52A64A18CCCFF500596D86 /* SpritzBrowserTests.m */; };
-		BA77429018D0FA1D00297412 /* NJKWebViewProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = BA77428F18D0FA1D00297412 /* NJKWebViewProgress.m */; };
-		BA77429318D109B500297412 /* NJKWebViewProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA77429218D109B500297412 /* NJKWebViewProgressView.m */; };
 		BA7E04F218CCD6D700C216A2 /* SpritzBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7E04F118CCD6D700C216A2 /* SpritzBrowserViewController.m */; };
 		BACA597F18CE3EF40026A02D /* WebViewControllerActivitySpritz.m in Sources */ = {isa = PBXBuildFile; fileRef = BACA597E18CE3EF40026A02D /* WebViewControllerActivitySpritz.m */; };
 /* End PBXBuildFile section */
@@ -61,10 +59,6 @@
 		BA52A64618CCCFF500596D86 /* SpritzBrowserTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpritzBrowserTests-Info.plist"; sourceTree = "<group>"; };
 		BA52A64818CCCFF500596D86 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BA52A64A18CCCFF500596D86 /* SpritzBrowserTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpritzBrowserTests.m; sourceTree = "<group>"; };
-		BA77428E18D0FA1D00297412 /* NJKWebViewProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJKWebViewProgress.h; path = SpritzBrowser/Vendor/NJKWebViewProgress.h; sourceTree = "<group>"; };
-		BA77428F18D0FA1D00297412 /* NJKWebViewProgress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NJKWebViewProgress.m; path = SpritzBrowser/Vendor/NJKWebViewProgress.m; sourceTree = "<group>"; };
-		BA77429118D109B500297412 /* NJKWebViewProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJKWebViewProgressView.h; path = SpritzBrowser/Vendor/NJKWebViewProgressView.h; sourceTree = "<group>"; };
-		BA77429218D109B500297412 /* NJKWebViewProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NJKWebViewProgressView.m; path = SpritzBrowser/Vendor/NJKWebViewProgressView.m; sourceTree = "<group>"; };
 		BA7E04F018CCD6D700C216A2 /* SpritzBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpritzBrowserViewController.h; sourceTree = "<group>"; };
 		BA7E04F118CCD6D700C216A2 /* SpritzBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpritzBrowserViewController.m; sourceTree = "<group>"; };
 		BACA597D18CE3EF40026A02D /* WebViewControllerActivitySpritz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewControllerActivitySpritz.h; sourceTree = "<group>"; };
@@ -114,7 +108,6 @@
 				BA52A64418CCCFF500596D86 /* SpritzBrowserTests */,
 				BA52A61E18CCCFF500596D86 /* Frameworks */,
 				BA417FD118CFA6B00057F7E1 /* Bundle */,
-				BA77428D18D0F9D600297412 /* Vendor */,
 				BA52A61D18CCCFF500596D86 /* Products */,
 				A1C4B629889D4B51AE0C50A9 /* Pods.xcconfig */,
 			);
@@ -185,17 +178,6 @@
 				BA52A64718CCCFF500596D86 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		BA77428D18D0F9D600297412 /* Vendor */ = {
-			isa = PBXGroup;
-			children = (
-				BA77428E18D0FA1D00297412 /* NJKWebViewProgress.h */,
-				BA77428F18D0FA1D00297412 /* NJKWebViewProgress.m */,
-				BA77429118D109B500297412 /* NJKWebViewProgressView.h */,
-				BA77429218D109B500297412 /* NJKWebViewProgressView.m */,
-			);
-			name = Vendor;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -331,10 +313,8 @@
 			files = (
 				BA52A63218CCCFF500596D86 /* AppDelegate.m in Sources */,
 				BA52A63518CCCFF500596D86 /* SpritzBrowser.xcdatamodeld in Sources */,
-				BA77429318D109B500297412 /* NJKWebViewProgressView.m in Sources */,
 				BACA597F18CE3EF40026A02D /* WebViewControllerActivitySpritz.m in Sources */,
 				BA52A62E18CCCFF500596D86 /* main.m in Sources */,
-				BA77429018D0FA1D00297412 /* NJKWebViewProgress.m in Sources */,
 				BA7E04F218CCD6D700C216A2 /* SpritzBrowserViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

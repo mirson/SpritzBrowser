@@ -54,6 +54,12 @@
 #define COCOAPODS_VERSION_MINOR_MBProgressHUD 8
 #define COCOAPODS_VERSION_PATCH_MBProgressHUD 0
 
+// MSDynamicsDrawerViewController
+#define COCOAPODS_POD_AVAILABLE_MSDynamicsDrawerViewController
+#define COCOAPODS_VERSION_MAJOR_MSDynamicsDrawerViewController 1
+#define COCOAPODS_VERSION_MINOR_MSDynamicsDrawerViewController 5
+#define COCOAPODS_VERSION_PATCH_MSDynamicsDrawerViewController 1
+
 // MagicalRecord
 #define COCOAPODS_POD_AVAILABLE_MagicalRecord
 #define COCOAPODS_VERSION_MAJOR_MagicalRecord 2
@@ -66,11 +72,29 @@
 #define COCOAPODS_VERSION_MINOR_MagicalRecord_Core 2
 #define COCOAPODS_VERSION_PATCH_MagicalRecord_Core 0
 
+// NJKWebViewProgress
+#define COCOAPODS_POD_AVAILABLE_NJKWebViewProgress
+#define COCOAPODS_VERSION_MAJOR_NJKWebViewProgress 0
+#define COCOAPODS_VERSION_MINOR_NJKWebViewProgress 2
+#define COCOAPODS_VERSION_PATCH_NJKWebViewProgress 2
+
+// NJKWebViewProgress/Core
+#define COCOAPODS_POD_AVAILABLE_NJKWebViewProgress_Core
+#define COCOAPODS_VERSION_MAJOR_NJKWebViewProgress_Core 0
+#define COCOAPODS_VERSION_MINOR_NJKWebViewProgress_Core 2
+#define COCOAPODS_VERSION_PATCH_NJKWebViewProgress_Core 2
+
+// NJKWebViewProgress/ProgressView
+#define COCOAPODS_POD_AVAILABLE_NJKWebViewProgress_ProgressView
+#define COCOAPODS_VERSION_MAJOR_NJKWebViewProgress_ProgressView 0
+#define COCOAPODS_VERSION_MINOR_NJKWebViewProgress_ProgressView 2
+#define COCOAPODS_VERSION_PATCH_NJKWebViewProgress_ProgressView 2
+
 // NSDate+TimeAgo
 #define COCOAPODS_POD_AVAILABLE_NSDate_TimeAgo
 #define COCOAPODS_VERSION_MAJOR_NSDate_TimeAgo 1
 #define COCOAPODS_VERSION_MINOR_NSDate_TimeAgo 0
-#define COCOAPODS_VERSION_PATCH_NSDate_TimeAgo 2
+#define COCOAPODS_VERSION_PATCH_NSDate_TimeAgo 3
 
 // SVWebViewController
 #define COCOAPODS_POD_AVAILABLE_SVWebViewController
@@ -80,7 +104,7 @@
 
 // Spritz-SDK
 #define COCOAPODS_POD_AVAILABLE_Spritz_SDK
-#define COCOAPODS_VERSION_MAJOR_Spritz_SDK 1
-#define COCOAPODS_VERSION_MINOR_Spritz_SDK 1
-#define COCOAPODS_VERSION_PATCH_Spritz_SDK 1
+#define COCOAPODS_VERSION_MAJOR_Spritz_SDK 2
+#define COCOAPODS_VERSION_MINOR_Spritz_SDK 0
+#define COCOAPODS_VERSION_PATCH_Spritz_SDK 0
 

@@ -6,5 +6,7 @@
 
 #import <CoreData/CoreData.h>
 
-#define MR_SHORTHAND
-#import "CoreData+MagicalRecord.h"
+#ifdef __OBJC__
+    #define MR_SHORTHAND
+    #import "CoreData+MagicalRecord.h"
+#endif

@@ -21,6 +21,7 @@ static const NSInteger kAddressCancelButtonTag = 1002;
 
 static NSString *clientID = @"AlexanderTest";
 static NSString *clientSecret = @"fgRsKKzgP6";
+static NSString *redirectURI = @"http://www.spritzinc.com/";
 
 @interface SpritzBrowserViewController ()
 {
@@ -123,17 +124,15 @@ static NSString *clientSecret = @"fgRsKKzgP6";
 
     static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-//        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         
         [SpritzConnector sharedConnector].delegate = self;
         [[SpritzConnector sharedConnector] setUpDataStore];
-//        [[SpritzConnector sharedConnector] authenticateClient];
-        SpritzSettings *spritzSettings = [SpritzSettings sharedSpritzSettings];
-        [[SpritzDataStore sharedStore] saveDefaultUserSettings:spritzSettings];
-        [[SpritzDataStore sharedStore].userSettings setWordsPerMinute:280];
+        [[SpritzConnector sharedConnector] authenticateClient];
+//        SpritzSettings *spritzSettings = [SpritzSettings sharedSpritzSettings];
+//        [[SpritzDataStore sharedStore] saveDefaultUserSettings:spritzSettings];
+//        [[SpritzDataStore sharedStore].userSettings setWordsPerMinute:280];
 	});
-    
-    [_progressView setProgress:0.6 animated:false];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -191,7 +190,6 @@ static NSString *clientSecret = @"fgRsKKzgP6";
     [self.webViewController updateToolbarItems];
 }
 
-
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
@@ -229,7 +227,7 @@ static NSString *clientSecret = @"fgRsKKzgP6";
 
 - (void)spritzViewControllerDidFinish:(SpritzViewController *)controller
 {
-    [controller dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - SpritzConnectorCredentialsDelegate
@@ -244,6 +242,11 @@ static NSString *clientSecret = @"fgRsKKzgP6";
     return clientSecret;
 }
 
+- (NSString *)redirectURI
+{
+    return redirectURI;
+}
+
 #pragma mark - WebViewControllerActivitySpritzDelegate
 
 - (void)performActivity:(NSString *)openingURL
@@ -252,6 +255,16 @@ static NSString *clientSecret = @"fgRsKKzgP6";
 }
 
 - (void)startAfterDelay:(NSString *)openingURL
+{
+    MainSpritzViewController *_mainSpritzViewController = [MainSpritzViewController new];
+    _mainSpritzViewController.spritzViewControllerDelegate = self;
+    [self presentViewController:_mainSpritzViewController animated:YES completion:^(void) {
+        [_mainSpritzViewController.spritzViewController startSpritzing:openingURL
+                                                            sourceType:SourceFlagURL];
+    }];
+}
+
+- (void)startAfterDelay_old:(NSString *)openingURL
 {
     NSString *resourceBundlePath = [[NSBundle mainBundle] pathForResource:@"Spritz-SDK" ofType:@"bundle"];
     NSBundle *resourceBundle = [NSBundle bundleWithPath:resourceBundlePath];
@@ -300,8 +313,8 @@ static NSString *clientSecret = @"fgRsKKzgP6";
 	return YES;
 }
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-    
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
 //    [self.addressField setSelectedTextRange:[self.addressField textRangeFromPosition:self.addressField.beginningOfDocument
 //                                                                          toPosition:self.addressField.endOfDocument]];
     

@@ -3,7 +3,7 @@ platform :ios, '7.0'
 link_with ['SpritzBrowser']
 
 pod 'SVWebViewController', :head
-pod 'Spritz-SDK', '~> 1.1.1'
+pod 'Spritz-SDK', '~> 2.0.0'
 
 post_install do |installer|
   installer.project.targets.each do |target|
